@@ -1,5 +1,5 @@
 const User = require("../models/user");
-
+const jwt=require('jsonwebtoken');
 // handle errors
 const handleErrors = (err) => {
   console.log(err.message, err.code);
@@ -24,6 +24,15 @@ const handleErrors = (err) => {
   return errors;
 }
 
+// creating jwt
+const maxAge= 3*24*60*60 ;// this is in second and not mili second , thus this will be equal to 3 days
+const createToken= (id)=>{
+return jwt.sign({id}, 'you are going to overcome eveything'),{
+  expiresIn :maxAge
+}
+};
+
+
 // controller actions
 module.exports.signup_get = (req, res) => {
   res.render('signup');
@@ -38,7 +47,9 @@ module.exports.signup_post = async (req, res) => {
 
   try {
     const user = await User.create({ email, password });
-    res.status(201).json(user);//201 means all okay
+    const token =createToken(user._id);
+    res.cookie('jwt',token,{httpOnly :true,maxAge :maxAge*1000});//cookie expiry is in milliseconds
+    res.status(201).json({user : user._id});//201 means all okay
   }
   catch(err) {
     const errors = handleErrors(err);
