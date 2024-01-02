@@ -2,7 +2,7 @@
 
 
 <h1>log in</h1>
-<form>
+<form action="/signup">
     <label for="email">Email</label>
     <input type="text" name="email" required>
    <div class="email error"></div>
@@ -12,6 +12,7 @@
    <div class="password error"></div>
    <button>Log-in</button>
    </form>
+   <%- include('partials/footer'); -%>
 
 
    <script>
@@ -52,4 +53,3 @@
 
     })
    </script>
-<%- include('partials/footer'); -%>
