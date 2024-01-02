@@ -36,9 +36,9 @@ const handleErrors = (err) => {
 // creating jwt
 const maxAge= 3*24*60*60 ;// this is in second and not mili second , thus this will be equal to 3 days
 const createToken= (id)=>{
-return jwt.sign({id}, 'you are going to overcome eveything'),{
+return jwt.sign( {id} , 'net ninja secret',{
   expiresIn :maxAge
-}
+});
 };
 
 

@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const authRoutes= require('./routes/authRoutes');
 const cookieparser = require('cookie-parser');
-
+const { requireAuth } =require('./middleware/authMiddleware');
 
 const app = express();
 
@@ -23,10 +23,12 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCr
   .catch((err) => console.log(err));
 
 // routes
-app.get('/', (req, res) => res.render('home'));
-app.get('/smoothies', (req, res) => res.render('smoothies'));
-app.use(authRoutes);
 app.use(cookieparser());
+app.use(authRoutes);
+app.get('/', (req, res) => res.render('home'));
+app.get('/smoothies', requireAuth, (req, res) => res.render('smoothies'));
+
+
 // cookies
 
 // app.get('/set-cookies',(req,res)=>{
@@ -42,4 +44,3 @@ app.use(cookieparser());
 // res.json(abc);
 
 // });
-
